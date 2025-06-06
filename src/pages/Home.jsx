@@ -1,39 +1,52 @@
-import { useState, useEffect } from "react";
-import ProductCard from "../components/ProductCard";
-import productsData from "../data/products.json";
+import { useEffect, useState } from "react";
+import { db } from "../firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
-export default function Home() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+const Home = () => {
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setProducts(productsData);
-      setLoading(false);
-    }, 500);
-  }, []);
+    const obtenerProductos = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "productos"));
+        const lista = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setProductos(lista);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      } finally {
+        setCargando(false);
+      }
+    };
 
-  if (loading) return <div className="loading">Cargando productos...</div>;
+    obtenerProductos();
+  }, []);
 
   return (
     <div className="products-container">
-      <h1>Nuestros Productos</h1>
-      {loading ? (
-        <p aria-live="polite">Cargando productos...</p>
+      <h1>Productos</h1>
+      {cargando ? (
+        <p className="loading">Cargando productos...</p>
       ) : (
-        <section aria-labelledby="products-heading">
-          <h2 id="products-heading" className="sr-only">
-            Listado de productos
-          </h2>
-          <div className="products-grid" role="list">
-            {products.map((product) => (
-              <div key={product.id} role="listitem">
-                <ProductCard product={product} />
+        <div className="products-grid">
+          {productos.map(producto => (
+            <div className="product-card" key={producto.id}>
+              <img src={producto.image} alt={producto.title} />
+              <div className="product-card-content">
+                <h3>{producto.title}</h3>
+                <p>${producto.price}</p>
+                <Link to={`/product/${producto.id}`}>Ver detalle</Link>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
-}
+};
+
+export default Home;
