@@ -1,52 +1,44 @@
 import { useEffect, useState } from "react";
-import { db } from "../firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import ProductCard from "../components/ProductCard"
+import { obtenerProductos } from "../services/productsService";
 
-const Home = () => {
+export default function Home() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
-
   useEffect(() => {
-    const obtenerProductos = async () => {
+    const cargarDatos = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "productos"));
-        const lista = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setProductos(lista);
+        const datos = await obtenerProductos();
+        setProductos(datos);
       } catch (error) {
-        console.error("Error al obtener productos:", error);
+        console.error("Error cargando productos:", error);
       } finally {
         setCargando(false);
       }
     };
 
-    obtenerProductos();
+    cargarDatos();
   }, []);
 
+  if (cargando) {
+    return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando catálogo...</p>;
+  }
+
   return (
-    <div className="products-container">
-      <h1>Productos</h1>
-      {cargando ? (
-        <p className="loading">Cargando productos...</p>
+    <div className="contenedor-productos">
+      <h2 style={{ textAlign: "center", margin: "2rem 0", color: "var(--color-primario)" }}>
+        Nuestros Productos
+      </h2>
+
+      {productos.length === 0 ? (
+        <p style={{ textAlign: "center" }}>No se encontraron productos.</p>
       ) : (
-        <div className="products-grid">
-          {productos.map(producto => (
-            <div className="product-card" key={producto.id}>
-              <img src={producto.image} alt={producto.title} />
-              <div className="product-card-content">
-                <h3>{producto.title}</h3>
-                <p>${producto.price}</p>
-                <Link to={`/product/${producto.id}`}>Ver detalle</Link>
-              </div>
-            </div>
+        <div className="grid-productos">
+          {productos.map((prod) => (
+            <ProductCard key={prod.id} producto={prod} />
           ))}
         </div>
       )}
     </div>
   );
-};
-
-export default Home;
+}

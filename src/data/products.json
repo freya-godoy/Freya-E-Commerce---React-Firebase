@@ -1,27 +1,23 @@
 [
   {
-    "id": 1,
     "title": "Notebook Hp 255 G10",
     "description": "Procesador: AMD Ryzen, sistema operativo Windows 11, Tarjeta gráfica AMD Radeon Graphics",
     "price": 100000,
     "image": "https://lidernotebooks.com.ar/wp-content/uploads/2024/05/Lenovo-Ideapad-1-15IAU7-82QD00DHUS-Core-i3-1215U_0003_Capa-3.jpg"
   },
   {
-    "id": 2,
     "title": "Tablet Samsung Galaxy A9 64gb",
     "description": "Capacidad total RAM 4 GB, tamaño de pantalla 8.7, diseñada para transportar a todos lados",
     "price": 45000,
     "image": "https://multipoint.com.ar/Image/0/700_700-a179.jpg"
   },
   {
-    "id": 3,
     "title": "Apple Watch Series 8 GPS",
     "description": "Caja de aluminio blanco, correa deportiva, seria 8 , sensor y app poderoso",
     "price": 25000,
     "image": "https://gizmodo.com/app/uploads/2022/09/794922a9810565afed516bb0252d66f1-680x383.jpg"
   },
   {
-    "id": 4,
     "title": "Monitor Led Samsung 22",
     "description": "Voltaje 220",
     "price": 35000,

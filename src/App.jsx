@@ -5,26 +5,39 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProductDetail from "./pages/ProductDetail";
 import Agregar from "./pages/Agregar";
+import RutaProtegida from "./components/RutaProtegida";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="app">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/agregar" element={<Agregar />} />
-          </Routes>
-        </main>
-        <footer>
-          <p>© 2025 E-commerce Curso React</p>
-        </footer>
-      </div>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="app">
+          <Navbar />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+
+              <Route
+                path="/agregar"
+                element={
+                  <RutaProtegida>
+                    <Agregar />
+                  </RutaProtegida>
+                }
+              />
+            </Routes>
+          </main>
+
+          <footer>
+            <p>© 2025 E-commerce Freya</p>
+          </footer>
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

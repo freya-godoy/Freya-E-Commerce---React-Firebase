@@ -1,41 +1,28 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import productsData from "../data/products.json";
+import { obtenerProductoPorId } from "../services/productsService";
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const [producto, setProducto] = useState(null);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    const foundProduct = productsData.find((p) => p.id === parseInt(id));
-    setProduct(foundProduct);
+    obtenerProductoPorId(id)
+      .then(setProducto)
+      .finally(() => setCargando(false));
   }, [id]);
 
-  if (!product) return <div className="loading">Cargando producto...</div>;
+  if (cargando) return <p>Cargando producto...</p>;
+  if (!producto) return <p>Producto no encontrado</p>;
 
   return (
-    <main> {/* Agregamos main para identificar el contenido principal */}
-    <div className="product-detail" aria-labelledby="product-title">
-      <img 
-        src={product.image} 
-        alt="" 
-        aria-hidden="true" // Decorativa
-      />
-      <h1 id="product-title">{product.name}</h1>
-      <p className="description">{product.description}</p>
-      <p 
-        className="price" 
-        aria-label={`Precio: ${product.price.toFixed(2)} dólares`}
-      >
-        ${product.price.toFixed(2)}
-      </p>
-      <button 
-        onClick={() => alert("Compra simulada")}
-        aria-label={`Comprar ${product.name}`}
-      >
-        Comprar
-      </button>
+    <div className="product-detail">
+      <img src={producto.image} alt={producto.title} />
+      <h1>{producto.title}</h1>
+      <p>{producto.description}</p>
+      <p>${producto.price}</p>
+      <button>Comprar</button>
     </div>
-  </main>
   );
 }

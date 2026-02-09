@@ -1,17 +1,23 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCmRRc6sjWD4WPGewXxKdUfaug0sh496UQ",
-  authDomain: "ecommerce-freya.firebaseapp.com",
-  projectId: "ecommerce-freya",
-  storageBucket: "ecommerce-freya.firebasestorage.app",
-  messagingSenderId: "686739826574",
-  appId: "1:686739826574:web:42c4dbd6646a2799d326df",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
+// Inicia app
 const app = initializeApp(firebaseConfig);
 
+// Inicia servicios
 const db = getFirestore(app);
-export { db };
+const auth = getAuth(app);
+const storage = getStorage(app);
+
+export { db, auth, storage };
