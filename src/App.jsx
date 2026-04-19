@@ -7,6 +7,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Agregar from "./pages/Agregar";
 import RutaProtegida from "./components/RutaProtegida";
 import { AuthProvider } from "./context/AuthContext";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/carrito" element={<Cart />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/product/:id" element={<ProductDetail />} />
@@ -32,8 +34,10 @@ function App() {
             </Routes>
           </main>
 
-          <footer>
-            <p>© 2025 E-commerce Freya</p>
+          <footer className="footer">
+            <div className="footer-content">
+              <p>© 2026 · Mi Ecommerce |  Proyecto académico · UTN</p>
+            </div>
           </footer>
         </div>
       </BrowserRouter>

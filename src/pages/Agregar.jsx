@@ -5,23 +5,28 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebaseConfig";
 
 export default function Agregar() {
+  // ESTADOS LOCALES: Guardan lo que el usuario escribe antes de mandarlo a Firebase.
   const [titulo, setTitulo] = useState("");
   const [precio, setPrecio] = useState("");
   const [descripcion, setDescripcion] = useState("");
-  const [imagen, setImagen] = useState(null);
-  
-  const [cargando, setCargando] = useState(false);
-  const navigate = useNavigate();
+  const [imagen, setImagen] = useState(null); // Aquí vive el archivo de la imagen seleccionada.
+
+  const [cargando, setCargando] = useState(false); // Para deshabilitar el botón y evitar múltiples envíos.
+  const navigate = useNavigate(); // Inicializamos la función de navegación.
+
+  // FUNCIÓN DE ENVÍO: Se dispara al dar clic en "Publicar Producto".
 
   const manejarEnvio = async (e) => {
-    e.preventDefault();
-    
+    e.preventDefault(); // Evita que la página se recargue (comportamiento por defecto de HTML)
+
+    // Validación de seguridad: si no hay foto, frenamos todo
+
     if (!imagen) {
       alert("selecciona una imagen.");
       return;
     }
 
-    setCargando(true);
+    setCargando(true); // Bloqueamos el botón (pone el estado en "Publicando...").
 
     try {
       // subir imagen a Storage
@@ -54,47 +59,47 @@ export default function Agregar() {
       <h2 style={{ textAlign: "center", color: "var(--color-primario)" }}>
         Nuevo Producto
       </h2>
-      
+
       <form onSubmit={manejarEnvio}>
         <div className="form-control">
           <label style={{ display: "block", marginBottom: "0.5rem" }}>Nombre</label>
-          <input 
-            type="text" 
-            value={titulo} 
-            onChange={(e) => setTitulo(e.target.value)} 
-            required 
+          <input
+            type="text"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+            required
             style={{ width: "100%", border: "none", outline: "none" }}
           />
         </div>
 
         <div className="form-control">
           <label style={{ display: "block", marginBottom: "0.5rem" }}>Precio</label>
-          <input 
-            type="number" 
-            value={precio} 
-            onChange={(e) => setPrecio(e.target.value)} 
-            required 
+          <input
+            type="number"
+            value={precio}
+            onChange={(e) => setPrecio(e.target.value)}
+            required
             style={{ width: "100%", border: "none", outline: "none" }}
           />
         </div>
 
         <div className="form-control">
           <label style={{ display: "block", marginBottom: "0.5rem" }}>Descripción</label>
-          <textarea 
+          <textarea
             rows="3"
-            value={descripcion} 
-            onChange={(e) => setDescripcion(e.target.value)} 
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
             style={{ width: "100%", border: "none", outline: "none", resize: "none" }}
           />
         </div>
 
         <div className="form-control">
           <label style={{ display: "block", marginBottom: "0.5rem" }}>Imagen</label>
-          <input 
-            type="file" 
+          <input
+            type="file"
             accept="image/*"
-            onChange={(e) => setImagen(e.target.files[0])} 
-            required 
+            onChange={(e) => setImagen(e.target.files[0])}
+            required
           />
         </div>
 
